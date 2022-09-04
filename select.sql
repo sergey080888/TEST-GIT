@@ -13,20 +13,20 @@ JOIN albums a ON  t.album_id = a.id
 GROUP BY album_name
 ;
 --все исполнители, которые не выпустили альбомы в 2020 году
-SELECT performer_name FROM performers p 
+SELECT performer_name FROM performers p
+WHERE performer_name NOT IN (SELECT DISTINCT performer_name FROM performers p 
 JOIN performer_album ON p.id = performer_album.performer_id 
 JOIN albums a ON performer_album.album_id = a.id 
-WHERE YEAR != 2020 ;
+WHERE YEAR = 2020);
 
---названия сборников, в которых присутствует конкретный исполнитель (AC-DC)
-SELECT collection_name FROM collections c 
+--названия сборников, в которых присутствует конкретный исполнитель ()
+SELECT DISTINCT collection_name FROM collections c 
 JOIN collection_tracks ct ON c.id = ct.collection_id 
 JOIN tracks t ON ct.track_id = t.id 
 JOIN albums a ON t.album_id = a.id 
 JOIN performer_album pa ON a.id = pa.album_id  
 JOIN performers p ON pa.performer_id = p.id 
-WHERE p.performer_name iLIKE '%U2%'
-GROUP BY collection_name;
+WHERE p.performer_name iLIKE '%u2%';
 
 --название альбомов, в которых присутствуют исполнители более 1 жанра
 SELECT album_name FROM albums a 
